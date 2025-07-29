@@ -8,11 +8,14 @@
             ? 'text-white bg-black border-gray-300 hover:bg-black/70 pr-4'
             : 'text-black border-gray-300 hover:bg-gray-200',
         ],
-        props.class
+        props.class,
       )
     "
   >
-    <CloseIcon v-if="props.selected" class="absolute right-0.5 top-1/2 -translate-y-1/2 size-3" />
+    <CloseIcon
+      v-if="props.selected"
+      class="absolute right-0.5 top-1/2 -translate-y-1/2 size-3"
+    />
     <slot :selected="props.selected"></slot>
   </span>
 </template>

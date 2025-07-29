@@ -6,7 +6,10 @@
   >
     <div
       :class="
-        twMerge('border-gray-300 border p-6 rounded-lg bg-white relative z-50 w-full', props.class)
+        twMerge(
+          'border-gray-300 border p-6 rounded-lg bg-white relative z-50 w-full',
+          props.class,
+        )
       "
     >
       <slot></slot>

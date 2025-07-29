@@ -11,7 +11,9 @@ const FILTERS_KEY = 'todo_app_filters';
 
 export class TaskRepository {
   public static saveProjects(projects: Project[]): void {
-    const storageProjects = projects.map((project) => TaskMapper.projectToStorage(project));
+    const storageProjects = projects.map((project) =>
+      TaskMapper.projectToStorage(project),
+    );
     localStorage.setItem(PROJECTS_KEY, JSON.stringify(storageProjects));
   }
 
@@ -21,7 +23,9 @@ export class TaskRepository {
 
     try {
       const storageProjects: StorageProject[] = JSON.parse(data);
-      return storageProjects.map((project) => TaskMapper.projectFromStorage(project));
+      return storageProjects.map((project) =>
+        TaskMapper.projectFromStorage(project),
+      );
     } catch (error) {
       console.error('Failed to parse projects from storage', error);
       return [];
