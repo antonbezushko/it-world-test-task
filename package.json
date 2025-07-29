@@ -10,16 +10,26 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",
+    "crypto-js": "^4.2.0",
     "js-crypto-aes": "^1.0.6",
+    "pinia": "^3.0.3",
+    "prettier": "^3.6.2",
+    "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.11",
+    "uuid": "^11.1.0",
     "vue": "^3.5.17"
   },
   "devDependencies": {
+    "@types/crypto-js": "^4.2.2",
+    "@types/node": "^24.1.0",
     "@vitejs/plugin-vue": "^6.0.0",
+    "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.7.0",
+    "happy-dom": "^18.0.1",
     "sass": "^1.89.2",
     "typescript": "~5.8.3",
     "vite": "^7.0.4",
+    "vitest": "^3.2.4",
     "vue-tsc": "^2.2.12"
   }
 }
