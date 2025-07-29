@@ -55,7 +55,7 @@ function exportDataFormSubmitHandler() {
 </script>
 
 <template>
-  <AppModal v-model="exportDataModal" v-slot="{ updateContent }">
+  <AppModal v-slot="{ updateContent }" v-model="exportDataModal">
     <AppModalContent class="max-w-lg">
       <AppModalHeader>
         <AppModalTitle>Export data</AppModalTitle>
@@ -67,9 +67,9 @@ function exportDataFormSubmitHandler() {
           <div class="space-y-2 my-4">
             <AppLabel :error-message="errors['secret']">Secret key</AppLabel>
             <AppInput
+              v-model="formData.secret"
               type="password"
               :error-message="errors['secret']"
-              v-model="formData.secret"
             />
             <ErrorMessage :error-message="errors['secret']" />
           </div>

@@ -90,7 +90,7 @@ function cancelAddProjetHandler() {
 </script>
 
 <template>
-  <AppModal v-model="addTaskModal" v-slot="{ updateContent }">
+  <AppModal v-slot="{ updateContent }" v-model="addTaskModal">
     <AppModalContent class="max-w-lg">
       <AppModalHeader>
         <AppModalTitle>Add new task</AppModalTitle>
@@ -112,8 +112,8 @@ function cancelAddProjetHandler() {
 
             <div class="relative">
               <AppInput
-                :error-message="formValidateProject.errors['name']"
                 v-model="addProjectFormData.name"
+                :error-message="formValidateProject.errors['name']"
                 placeholder="Project name"
               />
 
@@ -122,9 +122,9 @@ function cancelAddProjetHandler() {
                   Add
                 </AppButton>
                 <AppButton
-                  @click="cancelAddProjetHandler"
                   class="rounded-l-none"
                   variant="outline"
+                  @click="cancelAddProjetHandler"
                 >
                   Cancel
                 </AppButton>
@@ -139,8 +139,8 @@ function cancelAddProjetHandler() {
               >Project</AppLabel
             >
             <AppSelect
-              :error-message="errors['projectId']"
               v-model="currentProjectId"
+              :error-message="errors['projectId']"
               placeholder="Select project"
             >
               <AppSelectOption
@@ -159,10 +159,10 @@ function cancelAddProjetHandler() {
                 Title
               </AppLabel>
               <AppInput
+                v-model="formData.title"
                 :error-message="errors['title']"
                 placeholder="Title"
                 name="name"
-                v-model="formData.title"
               />
               <ErrorMessage :error-message="errors['title']" />
             </div>
@@ -176,13 +176,14 @@ function cancelAddProjetHandler() {
               </div>
             </div>
 
-            <div class="space-y-2" v-show="formData.tags.size > 0">
+            <div v-show="formData.tags.size > 0" class="space-y-2">
               <AppLabel class="text-gray-500 text-sm">Selected tags</AppLabel>
               <div class="flex flex-nowrap gap-2">
                 <TaskTag
+                  v-for="tag in formData.tags"
+                  :key="tag"
                   class="cursor-pointer"
                   selected
-                  v-for="tag in formData.tags"
                   @click="formData.tags.delete(tag)"
                   >{{ tag }}</TaskTag
                 >
@@ -193,9 +194,10 @@ function cancelAddProjetHandler() {
               <AppLabel class="text-gray-500 text-sm">Available tags</AppLabel>
               <div class="flex flex-nowrap gap-2">
                 <TaskTag
+                  v-for="tag in availableTags"
+                  :key="tag"
                   class="cursor-pointer"
                   @click="addTag(tag)"
-                  v-for="tag in availableTags"
                 >
                   {{ tag }}
                 </TaskTag>

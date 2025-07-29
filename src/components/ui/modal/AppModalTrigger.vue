@@ -9,7 +9,6 @@ import { inject } from 'vue';
 import { modalInjectionKey } from './injection-key';
 
 const injectValue = inject(modalInjectionKey);
-const slots = defineSlots();
 
 const handleClick = (e: Event) => {
   e.stopPropagation();

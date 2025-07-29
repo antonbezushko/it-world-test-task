@@ -42,10 +42,10 @@ function addStatus(status: TaskStatus) {
         <AppLabel> Filter by tags</AppLabel>
         <div class="flex gap-2">
           <TaskTag
-            class="cursor-pointer"
             v-for="tag in availableTags"
-            :selected="taskFilter.tags.includes(tag)"
             :key="tag"
+            class="cursor-pointer"
+            :selected="taskFilter.tags.includes(tag)"
             @click="addTag(tag)"
           >
             {{ tag }}
@@ -56,10 +56,10 @@ function addStatus(status: TaskStatus) {
         <AppLabel>Filter by status </AppLabel>
         <div class="flex gap-2">
           <TaskTag
-            class="cursor-pointer"
             v-for="(status, i) in TaskStatus"
-            :selected="taskFilter.status.includes(status)"
             :key="i"
+            class="cursor-pointer"
+            :selected="taskFilter.status.includes(status)"
             @click="addStatus(status)"
           >
             {{ status }}

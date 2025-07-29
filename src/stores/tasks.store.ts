@@ -4,6 +4,7 @@ import { TaskMapper } from '@/mapper/task.mapper';
 import { TaskRepository } from '@/repository/task.repository';
 import { CryptoService } from '@/service/crypto.service';
 import {
+  TaskStatus,
   type Project,
   type StorageProject,
   type Task,
@@ -224,6 +225,10 @@ export const useTasksStore = defineStore('tasks', () => {
     Object.assign(TaskRepository.loadFilters());
   }
 
+  function updateTaskStatus(taks: Task, newStatus: TaskStatus) {
+    taks.status = newStatus;
+  }
+
   watch(
     projects,
     (newProjects) => {
@@ -305,6 +310,7 @@ export const useTasksStore = defineStore('tasks', () => {
     addTask,
     subTaskModal,
     showAddSubtaskModal,
+    updateTaskStatus,
     addProject,
     showEditTaskModal,
     addSubTask,

@@ -1,5 +1,5 @@
 <template>
-  <slot :updateContent="updateContent" />
+  <slot :update-content="updateContent" />
 </template>
 
 <script setup lang="ts">
