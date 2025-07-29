@@ -3,7 +3,8 @@
     :class="
       twMerge(
         'block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
-        props.class
+        props.class,
+        [props.errorMessage ? 'text-red-500' : '']
       )
     "
   >
@@ -16,6 +17,7 @@ import { twMerge } from 'tailwind-merge';
 import type { HTMLAttributes } from 'vue';
 interface Props {
   class?: HTMLAttributes['class'];
+  errorMessage?: string;
 }
 const props = defineProps<Props>();
 </script>

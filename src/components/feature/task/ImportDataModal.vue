@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AppButton from '@/components/ui/button/AppButton.vue';
+import ErrorMessage from '@/components/ui/form/ErrorMessage.vue';
 import AppInput from '@/components/ui/input/AppInput.vue';
 import AppLabel from '@/components/ui/label/AppLabel.vue';
 import AppModal from '@/components/ui/modal/AppModal.vue';
@@ -7,26 +8,45 @@ import AppModalContent from '@/components/ui/modal/AppModalContent.vue';
 import AppModalDescription from '@/components/ui/modal/AppModalDescription.vue';
 import AppModalHeader from '@/components/ui/modal/AppModalHeader.vue';
 import AppModalTitle from '@/components/ui/modal/AppModalTitle.vue';
+import { useFormValidation } from '@/composables/form/useFormValidation';
 import { useTasksStore } from '@/stores/tasks.store';
 import { storeToRefs } from 'pinia';
-import { ref, watchEffect } from 'vue';
+import { reactive, watchEffect } from 'vue';
 
 const tasksStore = useTasksStore();
 
 const { importDataModal } = storeToRefs(tasksStore);
+const { importData } = tasksStore;
 
-const secret = ref('');
-const file = ref<File | null>(null);
+const formData = reactive({
+  fileTextInput: '',
+  secret: '',
+  file: null as File | null,
+});
+
+const rules = {
+  secret: [
+    (v: string) => !!v.trim() || 'Secret required',
+    (v: string) => v.length >= 8 || 'Min 8 chars ',
+  ],
+  file: [(v: File | null) => !!v || 'File required'],
+};
+const { errors, validateForm, clear, setError, error } = useFormValidation(
+  formData,
+  rules,
+);
 
 watchEffect(() => {
   if (importDataModal.value === false) {
-    secret.value = '';
+    formData.secret = '';
+    formData.fileTextInput = '';
+    clear();
   }
 });
 
 const handleFileChange = (e: Event) => {
   const target = e.target as HTMLInputElement;
-  file.value = target.files?.[0] || null;
+  formData.file = target.files?.[0] || null;
 };
 
 const readFileAsText = (file: File): Promise<string> => {
@@ -39,10 +59,19 @@ const readFileAsText = (file: File): Promise<string> => {
 };
 
 const handleImport = async () => {
-  if (!file.value || !secret.value) return;
-
-  const fileContent = await readFileAsText(file.value);
-  tasksStore.importData(fileContent, secret.value);
+  if (!validateForm()) {
+    return;
+  }
+  if (formData.file) {
+    const fileContent = await readFileAsText(formData.file);
+    try {
+      importData(fileContent, formData.secret);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      }
+    }
+  }
 };
 </script>
 
@@ -54,20 +83,34 @@ const handleImport = async () => {
         <AppModalDescription>
           Is simply dummy text of the printing and typesetting industry
         </AppModalDescription>
-        <form>
+        <form @submit.prevent="handleImport">
+          <ErrorMessage :error-message="error" />
           <div class="space-y-2 my-4">
-            <AppLabel>File</AppLabel>
-            <AppInput type="file" @change="handleFileChange" />
+            <AppLabel :error-message="errors['file']">File</AppLabel>
+            <AppInput
+              :error-message="errors['file']"
+              type="file"
+              @change="handleFileChange"
+              v-model="formData.fileTextInput"
+            />
+            <ErrorMessage :error-message="errors['file']" />
           </div>
           <div class="space-y-2 my-4">
-            <AppLabel>Secret key</AppLabel>
-            <AppInput type="password" v-model="secret" />
+            <AppLabel :error-message="errors['secret']">Secret key</AppLabel>
+            <AppInput
+              :error-message="errors['secret']"
+              type="password"
+              v-model="formData.secret"
+            />
+            <ErrorMessage :error-message="errors['secret']" />
+          </div>
+          <div class="flex gap-4 justify-end mt-4">
+            <AppButton variant="primary" type="submit">Import</AppButton>
+            <AppButton variant="outline" @click="updateContent(false)">
+              Cancel
+            </AppButton>
           </div>
         </form>
-        <div class="flex gap-4 justify-end mt-4">
-          <AppButton variant="primary" @click="handleImport">Export</AppButton>
-          <AppButton variant="outline" @click="updateContent(false)">Cancel</AppButton>
-        </div>
       </AppModalHeader>
     </AppModalContent>
   </AppModal>

@@ -18,7 +18,8 @@ import ImportDataModal from '@/components/feature/task/ImportDataModal.vue';
 
 const tasksStore = useTasksStore();
 const { isTaskEmpty } = storeToRefs(tasksStore);
-const { showAddTaskModal, load, showExportDataModal, showImportDataModal } = tasksStore;
+const { showAddTaskModal, load, showExportDataModal, showImportDataModal } =
+  tasksStore;
 
 onMounted(() => {
   load();
@@ -31,8 +32,8 @@ onMounted(() => {
       <div>
         <h2 class="text-black text-3xl font-semibold">Tasks</h2>
         <AppParagraph>
-          is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-          industry's standard dummy text ever since the 1500s
+          is simply dummy text of the printing and typesetting industry. Lorem
+          Ipsum has been the industry's standard dummy text ever since the 1500s
         </AppParagraph>
       </div>
 
@@ -42,13 +43,11 @@ onMounted(() => {
           Add
         </AppButton>
 
-        <AppButton @click="showExportDataModal">
-          <PlusIcon />
+        <AppButton variant="outline" @click="showExportDataModal">
           Export
         </AppButton>
 
-        <AppButton @click="showImportDataModal">
-          <PlusIcon />
+        <AppButton variant="outline" @click="showImportDataModal">
           Import
         </AppButton>
       </div>
