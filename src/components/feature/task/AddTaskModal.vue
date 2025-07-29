@@ -72,7 +72,7 @@ watchEffect(() => {
   if (addTaskModal.value === false) {
     reset();
     clear();
-    formValidateProject.clear();
+    cancelAddProjetHandler();
   }
 });
 
