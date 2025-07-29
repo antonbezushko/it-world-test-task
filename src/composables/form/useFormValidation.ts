@@ -1,17 +1,12 @@
 import { reactive } from 'vue';
 
-interface ValidationRule {
-  (value: any): string | boolean;
-}
+export function useFormValidation<T extends object>(
+  form: T,
+  rules: { [K in keyof T]?: Array<(v: T[K]) => boolean | string> }
+) {
+  const errors = reactive<{ [K in keyof T]?: string | '' }>({});
 
-interface FormValidationOptions {
-  [field: string]: ValidationRule[];
-}
-
-export function useFormValidation(form: Record<string, any>, rules: FormValidationOptions) {
-  const errors = reactive<Record<string, string>>({});
-
-  const validateField = (field: string) => {
+  const validateField = (field: keyof T) => {
     if (!rules[field]) return true;
 
     for (const rule of rules[field]) {
