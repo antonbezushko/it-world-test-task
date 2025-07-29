@@ -76,7 +76,7 @@ const handleImport = async () => {
 </script>
 
 <template>
-  <AppModal v-model="importDataModal" v-slot="{ updateContent }">
+  <AppModal v-slot="{ updateContent }" v-model="importDataModal">
     <AppModalContent class="max-w-lg">
       <AppModalHeader>
         <AppModalTitle>Import data</AppModalTitle>
@@ -88,19 +88,19 @@ const handleImport = async () => {
           <div class="space-y-2 my-4">
             <AppLabel :error-message="errors['file']">File</AppLabel>
             <AppInput
+              v-model="formData.fileTextInput"
               :error-message="errors['file']"
               type="file"
               @change="handleFileChange"
-              v-model="formData.fileTextInput"
             />
             <ErrorMessage :error-message="errors['file']" />
           </div>
           <div class="space-y-2 my-4">
             <AppLabel :error-message="errors['secret']">Secret key</AppLabel>
             <AppInput
+              v-model="formData.secret"
               :error-message="errors['secret']"
               type="password"
-              v-model="formData.secret"
             />
             <ErrorMessage :error-message="errors['secret']" />
           </div>

@@ -8,7 +8,8 @@ describe('Input component', () => {
       props: {
         type: 'text',
         modelValue: 'initial',
-        'onUpdate:modelValue': (e: any) => wrapper.setProps({ modelValue: e }),
+        'onUpdate:modelValue': (e: string) =>
+          wrapper.setProps({ modelValue: e }),
       },
     });
 
@@ -25,7 +26,8 @@ describe('Input component', () => {
     const wrapper = mount(AppInput, {
       props: {
         modelValue: 'first',
-        'onUpdate:modelValue': (e: any) => wrapper.setProps({ modelValue: e }),
+        'onUpdate:modelValue': (e: string) =>
+          wrapper.setProps({ modelValue: e }),
       },
     });
 

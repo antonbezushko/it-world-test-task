@@ -1,5 +1,5 @@
 <template>
-  <div :class="['relative w-full', props.class]" ref="selectRoot">
+  <div ref="selectRoot" :class="['relative w-full', props.class]">
     <button
       type="button"
       :class="[
