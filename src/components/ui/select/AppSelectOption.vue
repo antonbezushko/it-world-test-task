@@ -14,11 +14,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, onMounted, watchEffect, type Ref } from 'vue';
+import {
+  selectedValueKey,
+  selectOptionKey,
+} from '@/components/ui/select/injection-key';
+import { computed, inject, onMounted, watchEffect } from 'vue';
 
 const props = defineProps<{
   value: string | number;
-  label?: string;
+  label: string;
   selected?: boolean;
 }>();
 
@@ -26,9 +30,9 @@ const emit = defineEmits<{
   (e: 'select', value: string | number): void;
 }>();
 
-const selectedValue = inject<Ref<string | number | null>>('selectedValue')!;
+const selectedValue = inject(selectedValueKey)!;
 const isSelected = computed(() => props.value === selectedValue?.value);
-const selectOption = inject('selectOption');
+const selectOption = inject(selectOptionKey)!;
 
 const handleClick = () => {
   selectOption(props.value, props.label);
@@ -42,7 +46,7 @@ watchEffect(() => {
 });
 
 onMounted(() => {
-  if (selectedValue === props.value) {
+  if (selectedValue.value === props.value) {
     selectOption(props.value, props.label);
   }
 

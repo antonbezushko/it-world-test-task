@@ -25,10 +25,7 @@ const formData = reactive({
 });
 
 const rules = {
-  secret: [
-    (v: string) => !!v.trim() || 'Secret required',
-    (v: string) => v.length >= 8 || 'Min 8 chars ',
-  ],
+  secret: [(v: string) => !!v.trim() || 'Secret required'],
   file: [(v: File | null) => !!v || 'File required'],
 };
 const { errors, validateForm, clear, setError, error } = useFormValidation(
