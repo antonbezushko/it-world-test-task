@@ -1,22 +1,28 @@
-import { isRef, reactive, ref, type Ref } from 'vue';
+import { isRef, reactive, ref, type Reactive, type Ref } from 'vue';
 
-export function useFormValidation<T extends object>(
-  form: Ref<T> | T,
-  rules: { [K in keyof T]?: Array<(v: T[K]) => boolean | string> },
+export function useFormValidation<T>(
+  form: Ref<T> | Reactive<T>,
+  rules: {
+    [K in keyof T]?: Array<(v: T[K]) => boolean | string>;
+  },
 ) {
-  const errors = reactive<{ [K in keyof T]?: string | '' }>({});
+  const errors = reactive<Partial<Record<keyof T, string>>>({}) as Partial<
+    Record<keyof T, string>
+  >;
 
   const validateField = (field: keyof T) => {
     if (!rules[field]) return true;
 
     for (const rule of rules[field]) {
       let error;
-      if (isRef(form)) {
+
+      if (isRef<T>(form)) {
         error = rule(form.value[field]);
       } else {
-        error = rule(form[field]);
+        error = rule((form as unknown as T)[field]);
       }
-      if (typeof error === 'string') {
+
+      if (typeof error === 'string' && field in errors) {
         errors[field] = error;
         return false;
       }
@@ -28,7 +34,7 @@ export function useFormValidation<T extends object>(
 
   function clear() {
     for (const k in errors) {
-      errors[k] = '';
+      errors[k as keyof T] = '';
     }
   }
 
@@ -38,13 +44,13 @@ export function useFormValidation<T extends object>(
     error.value = '';
     let isValid = true;
     Object.keys(rules).forEach((field) => {
-      if (!validateField(field)) {
+      if (!validateField(field as keyof T)) {
         isValid = false;
       }
     });
 
     if (!isValid && Object.keys(errors).length > 0) {
-      error.value = errors[Object.keys(errors)[0]];
+      error.value = errors[Object.keys(errors)[0] as keyof T] || '';
     }
 
     return isValid;

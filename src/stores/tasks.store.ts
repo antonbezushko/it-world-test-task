@@ -260,7 +260,10 @@ export const useTasksStore = defineStore('tasks', () => {
 
       return { success: true, data: encryptedData };
     } catch (error) {
-      return { success: false, error: error.message };
+      if (error instanceof Error) {
+        return { success: false, error: error?.message };
+      }
+      return { success: false, error: 'Unhandeled error' };
     }
   };
 
