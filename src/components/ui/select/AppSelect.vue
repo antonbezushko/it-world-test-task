@@ -53,6 +53,10 @@
 <script setup lang="ts">
 import AppSelectOption from '@/components/ui/select/AppSelectOption.vue';
 import {
+  selectedValueKey,
+  selectOptionKey,
+} from '@/components/ui/select/injection-key';
+import {
   ref,
   watch,
   onMounted,
@@ -128,13 +132,13 @@ const clickOutsideHandler = (event: MouseEvent) => {
   }
 };
 
-provide('selectOption', (value: string | number, label: string) => {
+provide(selectOptionKey, (value: string | number, label: string) => {
   emit('update:modelValue', value);
   selectedLabel.value = label;
   isOpen.value = false;
 });
 
-provide('selectedValue', model);
+provide(selectedValueKey, model);
 
 onMounted(() => {
   document.addEventListener('click', clickOutsideHandler);
