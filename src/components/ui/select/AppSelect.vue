@@ -1,11 +1,19 @@
 <template>
-  <div class="relative w-full" ref="selectRoot">
+  <div :class="['relative w-full', props.class]" ref="selectRoot">
     <button
       type="button"
-      class="flex h-9 w-full items-center rounded-md border border-gray-400/40 bg-white px-3 py-1 text-sm shadow-sm cursor-pointer outline-2 outline-transparent focus:outline-gray-400 focus:border-0"
+      :class="[
+        'flex h-9 w-full items-center rounded-md border border-gray-400/40 bg-white px-3 py-1 text-sm shadow-sm cursor-pointer outline-2 outline-transparent  focus:border-0',
+        props.errorMessage
+          ? 'border-red-500 focus:outline-red-400'
+          : 'focus:outline-gray-400',
+      ]"
       @click="toggleDropdown"
     >
-      <span class="flex-1 text-left" :class="selectedLabel ? 'text-gray-900' : 'text-gray-400'">
+      <span
+        class="flex-1 text-left"
+        :class="selectedLabel ? 'text-gray-900' : 'text-gray-400'"
+      >
         {{ selectedLabel || placeholder }}
       </span>
       <svg
@@ -44,24 +52,34 @@
 
 <script setup lang="ts">
 import AppSelectOption from '@/components/ui/select/AppSelectOption.vue';
-import { ref, watch, onMounted, onBeforeUnmount, provide, useSlots, type VNode } from 'vue';
+import {
+  ref,
+  watch,
+  onMounted,
+  onBeforeUnmount,
+  provide,
+  useSlots,
+  type VNode,
+  type HTMLAttributes,
+} from 'vue';
 
 interface Option {
   value: string | number;
   label: string;
 }
 
-const props = withDefaults(
-  defineProps<{
-    modelValue?: string | number | null;
-    options?: Option[];
-    placeholder?: string;
-  }>(),
-  {
-    placeholder: 'Select an option',
-    options: () => [],
-  }
-);
+interface Props {
+  modelValue?: string | number | null;
+  options?: Option[];
+  placeholder?: string;
+  errorMessage?: string;
+  class?: HTMLAttributes['class'];
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  placeholder: 'Select an option',
+  options: () => [],
+});
 
 const model = defineModel<string | number | null>({
   default: null,
@@ -95,7 +113,7 @@ watch(
         }
       });
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 const toggleDropdown = () => {
@@ -103,6 +121,8 @@ const toggleDropdown = () => {
 };
 
 const clickOutsideHandler = (event: MouseEvent) => {
+  console.log(selectRoot.value);
+
   if (selectRoot.value && !selectRoot.value.contains(event.target as Node)) {
     isOpen.value = false;
   }

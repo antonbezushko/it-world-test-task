@@ -3,7 +3,12 @@ import { createTask, type CreateTaskParams } from '@/factories/taks.factory';
 import { TaskMapper } from '@/mapper/task.mapper';
 import { TaskRepository } from '@/repository/task.repository';
 import { CryptoService } from '@/service/crypto.service';
-import { type Project, type StorageProject, type Task, type TaskFilter } from '@/types/task';
+import {
+  type Project,
+  type StorageProject,
+  type Task,
+  type TaskFilter,
+} from '@/types/task';
 import { defineStore } from 'pinia';
 import { computed, reactive, ref, watch } from 'vue';
 
@@ -66,10 +71,13 @@ export const useTasksStore = defineStore('tasks', () => {
     const collectIds = (tasks: Task[]) => {
       tasks.forEach((task) => {
         const statusMatch =
-          taskFilter.status.length === 0 || taskFilter.status.includes(task.status);
+          taskFilter.status.length === 0 ||
+          taskFilter.status.includes(task.status);
         const tagsMatch =
-          taskFilter.tags.length === 0 || taskFilter.tags.every((tag) => task.tags.includes(tag));
-        const titleMatch = !taskFilter.title || task.title.includes(taskFilter.title);
+          taskFilter.tags.length === 0 ||
+          taskFilter.tags.every((tag) => task.tags.includes(tag));
+        const titleMatch =
+          !taskFilter.title || task.title.includes(taskFilter.title);
 
         if (statusMatch && tagsMatch && titleMatch) {
           ids.add(task.id);
@@ -94,7 +102,10 @@ export const useTasksStore = defineStore('tasks', () => {
   });
 
   const isTaskEmpty = computed(() => {
-    return (isFilterActive.value && filteredTaskIds.value.size === 0) || tasks.value.length === 0;
+    return (
+      (isFilterActive.value && filteredTaskIds.value.size === 0) ||
+      tasks.value.length === 0
+    );
   });
 
   const addTaskModal = ref(false);
@@ -114,7 +125,9 @@ export const useTasksStore = defineStore('tasks', () => {
   function addTask(createTaskParams: CreateTaskParams) {
     if (currentProjectId.value) {
       const newTask = createTask(createTaskParams);
-      projects.value.find((p) => p.id === currentProjectId.value)?.tasks.push(newTask);
+      projects.value
+        .find((p) => p.id === currentProjectId.value)
+        ?.tasks.push(newTask);
     }
     addTaskModal.value = false;
   }
@@ -130,7 +143,11 @@ export const useTasksStore = defineStore('tasks', () => {
     editTaskModal.value = true;
   }
 
-  function showDeleteTaskModal(task: Task, parentTask?: Task, parentProject?: Project) {
+  function showDeleteTaskModal(
+    task: Task,
+    parentTask?: Task,
+    parentProject?: Project,
+  ) {
     deleteTaskModal.value = true;
     deleteTaskParentRef = parentTask || null;
     deleteTaskProjectParentRef = parentProject || null;
@@ -172,7 +189,7 @@ export const useTasksStore = defineStore('tasks', () => {
     if (deleteTaskRef) {
       if (deleteTaskParentRef) {
         const index = deleteTaskParentRef.subtasks.findIndex(
-          (task) => task.id === deleteTaskRef?.id
+          (task) => task.id === deleteTaskRef?.id,
         );
         if (index !== -1) {
           deleteTaskParentRef.subtasks.splice(index, 1);
@@ -180,7 +197,7 @@ export const useTasksStore = defineStore('tasks', () => {
       } else {
         if (deleteTaskProjectParentRef) {
           const index = deleteTaskProjectParentRef.tasks.findIndex(
-            (task) => task.id === deleteTaskRef?.id
+            (task) => task.id === deleteTaskRef?.id,
           );
           if (index !== -1) {
             deleteTaskProjectParentRef.tasks.splice(index, 1);
@@ -212,7 +229,7 @@ export const useTasksStore = defineStore('tasks', () => {
     (newProjects) => {
       TaskRepository.saveProjects(newProjects);
     },
-    { deep: true }
+    { deep: true },
   );
 
   watch(
@@ -220,10 +237,12 @@ export const useTasksStore = defineStore('tasks', () => {
     (newFilter) => {
       TaskRepository.saveFilters(newFilter);
     },
-    { deep: true }
+    { deep: true },
   );
 
-  const exportData = (secret: string): { success: boolean; error?: string; data?: string } => {
+  const exportData = (
+    secret: string,
+  ): { success: boolean; error?: string; data?: string } => {
     try {
       const dataToExport = {
         projects: projects.value,
@@ -258,27 +277,27 @@ export const useTasksStore = defineStore('tasks', () => {
     return true;
   };
 
-  function importData(encryptedData: string, secret: string): { success: boolean; error?: string } {
-    try {
-      if (!CryptoService.validateEncryptedData(encryptedData, secret)) {
-        return { success: false, error: 'Неверный пароль или поврежденные данные' };
-      }
+  function importData(encryptedData: string, secret: string) {
+    if (!CryptoService.validateEncryptedData(encryptedData, secret)) {
+      throw new Error('Incorrect password or invalid data');
+    }
 
+    try {
       const decrypted = CryptoService.decrypt(encryptedData, secret);
       const data = JSON.parse(decrypted);
 
       if (!data.projects || !Array.isArray(data.projects)) {
-        return { success: false, error: 'Некорректный формат данных' };
+        throw new Error('Incorrect data format');
       }
-
-      if (Array.isArray(data.projects)) {
-        projects.value = data.projects.map((p: StorageProject) => TaskMapper.projectFromStorage(p));
-      }
-      importDataModal.value = false;
-      return { success: true };
-    } catch (error) {
-      return { success: false, error: error.message };
+      projects.value = data.projects.map((p: StorageProject) =>
+        TaskMapper.projectFromStorage(p),
+      );
+    } catch {
+      throw new Error('Incorrect data format');
     }
+
+    importDataModal.value = false;
+    return { success: true };
   }
 
   return {
