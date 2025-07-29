@@ -14,7 +14,6 @@ import { ref, watchEffect } from 'vue';
 const tasksStore = useTasksStore();
 
 const { importDataModal } = storeToRefs(tasksStore);
-const { downloadExport } = tasksStore;
 
 const secret = ref('');
 const file = ref<File | null>(null);
@@ -43,7 +42,7 @@ const handleImport = async () => {
   if (!file.value || !secret.value) return;
 
   const fileContent = await readFileAsText(file.value);
-  const result = tasksStore.importData(fileContent, secret.value);
+  tasksStore.importData(fileContent, secret.value);
 };
 </script>
 

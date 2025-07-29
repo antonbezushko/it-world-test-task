@@ -9,7 +9,7 @@ import AppModalHeader from '@/components/ui/modal/AppModalHeader.vue';
 import AppModalTitle from '@/components/ui/modal/AppModalTitle.vue';
 import { useTasksStore } from '@/stores/tasks.store';
 import { storeToRefs } from 'pinia';
-import { onMounted, ref, watchEffect } from 'vue';
+import { ref, watchEffect } from 'vue';
 
 const tasksStore = useTasksStore();
 
