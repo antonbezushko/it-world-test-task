@@ -17,14 +17,20 @@
           <h3 class="text-base font-semibold">{{ props.task.title }}</h3>
         </div>
         <div class="flex gap-1">
-          <AppButton @click="showAddSubtaskModal(props.task)" size="icon" variant="outline">
+          <AppButton
+            @click="showAddSubtaskModal(props.task)"
+            size="icon"
+            variant="outline"
+          >
             <PlusIcon /> Subtask
           </AppButton>
           <AppButton @click="showEditTaskModal(props.task)" size="icon">
             <EditIcon />
           </AppButton>
           <AppButton
-            @click="showDeleteTaskModal(props.task, props.parentTask, props.project)"
+            @click="
+              showDeleteTaskModal(props.task, props.parentTask, props.project)
+            "
             size="icon"
             variant="destructive"
           >
@@ -72,7 +78,8 @@ import { ref, type HTMLAttributes } from 'vue';
 
 const tasksStore = useTasksStore();
 const { filteredTaskIds, isFilterActive } = storeToRefs(tasksStore);
-const { showAddSubtaskModal, showEditTaskModal, showDeleteTaskModal } = tasksStore;
+const { showAddSubtaskModal, showEditTaskModal, showDeleteTaskModal } =
+  tasksStore;
 const collapseSubtasks = ref(false);
 
 interface Props {

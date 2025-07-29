@@ -5,7 +5,7 @@
         'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*=\'size-\'])]:size-1 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]   has-[>svg]:px-2 font-medium cursor-pointer',
         props.class,
         variantClasses,
-        sizeClasses
+        sizeClasses,
       )
     "
     v-bind="props"
