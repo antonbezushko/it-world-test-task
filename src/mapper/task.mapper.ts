@@ -22,7 +22,9 @@ export class TaskMapper {
       ...storageTask,
       createdAt: new Date(storageTask.createdAt),
       updatedAt: new Date(storageTask.updatedAt),
-      subtasks: storageTask.subtasks.map((subtask) => this.fromStorage(subtask)),
+      subtasks: storageTask.subtasks.map((subtask) =>
+        this.fromStorage(subtask),
+      ),
     };
   }
 
@@ -44,7 +46,9 @@ export class TaskMapper {
     return { ...filter };
   }
 
-  public static filterFromStorage(storageFilter: StorageTaskFilter): TaskFilter {
+  public static filterFromStorage(
+    storageFilter: StorageTaskFilter,
+  ): TaskFilter {
     return { ...storageFilter };
   }
 }

@@ -23,8 +23,12 @@ const { deleteTask } = tasksStore;
           Is simply dummy text of the printing and typesetting industry
         </AppModalDescription>
         <div class="flex gap-4 justify-end mt-4">
-          <AppButton variant="destructive" @click="deleteTask">Delete</AppButton>
-          <AppButton variant="outline" @click="updateContent(false)">Cancel</AppButton>
+          <AppButton variant="destructive" @click="deleteTask"
+            >Delete</AppButton
+          >
+          <AppButton variant="outline" @click="updateContent(false)"
+            >Cancel</AppButton
+          >
         </div>
       </AppModalHeader>
     </AppModalContent>

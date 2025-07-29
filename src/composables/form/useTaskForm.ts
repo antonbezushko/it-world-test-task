@@ -3,7 +3,11 @@ import { TaskStatus, type Task } from '@/types/task';
 import { storeToRefs } from 'pinia';
 import { computed, reactive, ref } from 'vue';
 
-type Params = Partial<{ title: string; status: Task['status']; tags: Task['tags'] }>;
+type Params = Partial<{
+  title: string;
+  status: Task['status'];
+  tags: Task['tags'];
+}>;
 
 export function useTaskForm(params?: Params) {
   const { availableTags: globalAvailableTags } = storeToRefs(useTasksStore());
@@ -54,5 +58,14 @@ export function useTaskForm(params?: Params) {
     formData.tags.add(tag);
   }
 
-  return { formData, reset, tagInput, addTagInput, addTag, availableTags, formDataToSave, setData };
+  return {
+    formData,
+    reset,
+    tagInput,
+    addTagInput,
+    addTag,
+    availableTags,
+    formDataToSave,
+    setData,
+  };
 }

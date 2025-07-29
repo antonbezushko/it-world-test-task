@@ -1,10 +1,10 @@
-import { isRef, reactive, ref, type Ref } from "vue";
+import { isRef, reactive, ref, type Ref } from 'vue';
 
 export function useFormValidation<T extends object>(
   form: Ref<T> | T,
   rules: { [K in keyof T]?: Array<(v: T[K]) => boolean | string> },
 ) {
-  const errors = reactive<{ [K in keyof T]?: string | "" }>({});
+  const errors = reactive<{ [K in keyof T]?: string | '' }>({});
 
   const validateField = (field: keyof T) => {
     if (!rules[field]) return true;
@@ -16,26 +16,26 @@ export function useFormValidation<T extends object>(
       } else {
         error = rule(form[field]);
       }
-      if (typeof error === "string") {
+      if (typeof error === 'string') {
         errors[field] = error;
         return false;
       }
     }
 
-    errors[field] = "";
+    errors[field] = '';
     return true;
   };
 
   function clear() {
     for (const k in errors) {
-      errors[k] = "";
+      errors[k] = '';
     }
   }
 
-  const error = ref("");
+  const error = ref('');
 
   const validateForm = () => {
-    error.value = "";
+    error.value = '';
     let isValid = true;
     Object.keys(rules).forEach((field) => {
       if (!validateField(field)) {
