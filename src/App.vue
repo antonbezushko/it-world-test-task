@@ -55,7 +55,7 @@ onMounted(() => {
     <TaskFilter class="mt-5" />
     <div class="mt-8">
       <h3 class="text-black text-xl font-semibold">Tasks list:</h3>
-      <TaskEmptyBlock class="mt-2" v-show="isTaskEmpty" />
+      <TaskEmptyBlock v-show="isTaskEmpty" class="mt-2" />
       <div class="mt-4 space-y-4">
         <TaskList />
       </div>

@@ -42,4 +42,4 @@ export interface StorageProject {
   tasks: StorageTask[];
 }
 
-export interface StorageTaskFilter extends TaskFilter {}
+export type StorageTaskFilter = TaskFilter;

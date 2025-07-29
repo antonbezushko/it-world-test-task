@@ -40,9 +40,10 @@ const variantClasses = computed<string>(() => {
     case 'default':
       return 'bg-black text-white shadow-xs hover:bg-black/80';
 
-    default:
+    default: {
       const fallbackVariant: never = variant;
       return fallbackVariant;
+    }
   }
 });
 
@@ -61,9 +62,10 @@ const sizeClasses = computed<string>(() => {
     case 'icon':
       return 'h-7';
 
-    default:
+    default: {
       const fallbackSize: never = size;
       return fallbackSize;
+    }
   }
 });
 

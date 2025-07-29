@@ -1,7 +1,7 @@
 <template>
   <div
-    class="fixed inset-0 bg-black/50 flex justify-center items-center z-40"
     v-show="showContent"
+    class="fixed inset-0 bg-black/50 flex justify-center items-center z-40"
     @mousedown.self="updateContent(false)"
   >
     <div

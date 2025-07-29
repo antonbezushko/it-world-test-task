@@ -56,7 +56,7 @@ function editTaskFormSumbitHadler() {
 </script>
 
 <template>
-  <AppModal v-model="editTaskModal" v-slot="{ updateContent }">
+  <AppModal v-slot="{ updateContent }" v-model="editTaskModal">
     <AppModalContent class="max-w-lg">
       <AppModalHeader>
         <AppModalTitle>Edit task</AppModalTitle>
@@ -70,10 +70,10 @@ function editTaskFormSumbitHadler() {
                 >Title</AppLabel
               >
               <AppInput
+                v-model="formData.title"
                 :error-message="errors['title']"
                 placeholder="Title"
                 name="name"
-                v-model="formData.title"
               />
               <ErrorMessage :error-message="errors['title']" />
             </div>
@@ -85,13 +85,14 @@ function editTaskFormSumbitHadler() {
               </div>
             </div>
 
-            <div class="space-y-2" v-show="formData.tags.size > 0">
+            <div v-show="formData.tags.size > 0" class="space-y-2">
               <AppLabel class="text-gray-500 text-sm">Selected tags</AppLabel>
               <div class="flex flex-nowrap gap-2">
                 <TaskTag
+                  v-for="tag in formData.tags"
+                  :key="tag"
                   class="cursor-pointer"
                   selected
-                  v-for="tag in formData.tags"
                   @click="formData.tags.delete(tag)"
                   >{{ tag }}</TaskTag
                 >
@@ -102,9 +103,10 @@ function editTaskFormSumbitHadler() {
               <AppLabel class="text-gray-500 text-sm">Available tags</AppLabel>
               <div class="flex flex-nowrap gap-2">
                 <TaskTag
+                  v-for="tag in availableTags"
+                  :key="tag"
                   class="cursor-pointer"
                   @click="addTag(tag)"
-                  v-for="tag in availableTags"
                 >
                   {{ tag }}
                 </TaskTag>

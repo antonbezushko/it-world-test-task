@@ -15,7 +15,7 @@ const { deleteTask } = tasksStore;
 </script>
 
 <template>
-  <AppModal v-model="deleteTaskModal" v-slot="{ updateContent }">
+  <AppModal v-slot="{ updateContent }" v-model="deleteTaskModal">
     <AppModalContent class="max-w-lg">
       <AppModalHeader>
         <AppModalTitle>Add new subtask</AppModalTitle>

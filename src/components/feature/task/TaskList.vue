@@ -2,11 +2,11 @@
   <div v-for="project in projects" :key="project.id">
     <h3 v-if="hasFilteredTasks(project)" class="text-lg">{{ project.name }}</h3>
     <TaskCard
-      class="mt-4"
       v-for="task in project.tasks"
+      :key="task.id"
+      class="mt-4"
       :project="project"
       :task="task"
-      :key="task.id"
     />
   </div>
 </template>
